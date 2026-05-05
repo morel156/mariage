@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hervé & Carelle - Mariage 23 Mai 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Georgia', 'Garamond', serif;
+            background: #faf6f1;
+            overflow: auto;
+        }
+
+        .image-wrapper {
+            position: relative;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('8.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 400px;
+            height: auto;
+        }
+
+        .image-wrapper img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+        }
+
+        .play-button {
+            position: absolute;
+            top: calc(100% - 60px);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-text {
+            position: absolute;
+            top: calc(100% - 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            color: #CC7700;
+            font-size: 0.85em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .music-circle-text {
+            position: absolute;
+            top: calc(100% - 160px);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+            animation: rotateCircle 8s linear infinite;
+        }
+
+        .date-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 40px 0;
+            padding: 20px;
+        }
+
+        .date-circle-small {
+            width: 70px;
+            height: 70px;
+            background: #CC7700;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .date-dot {
+            width: 8px;
+            height: 8px;
+            background: #CC7700;
+            border-radius: 50%;
+        }
+
+        @keyframes rotateCircle {
+            from {
+                transform: translateX(-50%) rotate(0deg);
+            }
+            to {
+                transform: translateX(-50%) rotate(360deg);
+            }
+        }
+
+        .play-icon {
+            width: 45px;
+            height: 45px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            object-fit: contain;
+        }
+
+        .image-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to bottom, rgba(250, 246, 241, 0), rgba(250, 246, 241, 1));
+            pointer-events: none;
+        }
+
+   
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" style="display: none;">
+        <source src="music.m4a" type="audio/mpeg">
+    </audio>
+    
+    <div class="image-wrapper">
+        <svg class="music-circle-text" viewBox="0 0 200 200" width="200" height="200">
+            <defs>
+                <path id="circlePath" d="M 100, 100 m -45, 0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0" fill="none"/>
+            </defs>
+            <text font-size="14" font-weight="600" letter-spacing="1.5" fill="#CC7700">
+                <textPath href="#circlePath" startOffset="0%" text-anchor="start">
+                    JOUER DE LA MUSIQUE
+                </textPath>
+            </text>
+        </svg>
+        <div class="play-button" id="playBtn">
+            <img src="6.png" alt="Play" class="play-icon">
+        </div>
+        <img src="image1.png" alt="" class="img-fluid mx-0" style="margin-top: 30px;">
+    </div>
+
+    <div class="date-section">
+        <div class="date-circle-small">23</div>
+        <div class="date-dot"></div>
+        <div class="date-circle-small">05</div>
+        <div class="date-dot"></div>
+        <div class="date-circle-small">26</div>
+    </div>
+
+    <div style="text-align: center; font-size: 1.1em; color: #CC7700; font-weight: 500; margin: -30px 0 20px 0;">
+        Mairie de Yamoussoukro
+    </div>
+    
+    <div style="text-align: center;">
+        <img src="5.png" alt="#" style="max-width: 100%; height: auto; margin-top: -70px;">
+    </div>
+    
+    <div style="position: relative; text-align: center; margin: -60px 0 30px 0; padding: 20px;">
+        <img src="1.4.png" alt="#" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); height: 60px; width: auto; z-index: 10;object-fit: cover;">
+        <button style="background: #CC7700; color: white; border: none; padding: 10px 40px; font-size: 1em; font-weight: 600; border-radius: 5px; cursor: pointer; transition: all 0.3s ease;">
+            LIEUX DES ÉVÈNEMENTS
+        </button>
+        <img src="1.4F.png" alt="#" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); height: 60px; width: auto; z-index: 10;object-fit: cover;">
+    </div>
+    
+    <div style="text-align: center; font-size: 0.9em; color: #492a01; font-weight: 600; margin: -40px 0 20px 0;">
+        CÉRÉMONIE CIVILE MAIRIE DE YAMOUSSOUKRO
+    </div>
+    
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="https://maps.app.goo.gl/pdoxxDXKr89p6WKS9?g_st=aw" target="_blank" style="display: inline-block; background: #CC7700; color: white; text-decoration: none; padding: 10px 25px; font-size: 0.7em; font-weight: 600; border-radius: 25px; transition: all 0.3s ease;">
+            VOIR SUR<br>GOOGLE MAPS
+        </a>
+    </div>
+    <div style="text-align: center;">
+        <img src="5.1.png" alt="#" style="max-width: 100%; height: auto; margin-top: -80px;">
+    </div>
+    <div style="text-align: center; font-size: 0.9em; color: #492a01; font-weight: 600; margin: -40px 0 20px 0;">
+        LIEU DE RÉCEPTION - SALLE <br> FÊTES DE YAMOUSSOUKRO
+    </div>
+    
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="https://maps.app.goo.gl/e581RQUTYzCkxbh19?g_st=aw" target="_blank" style="display: inline-block; background: #CC7700; color: white; text-decoration: none; padding: 10px 25px; font-size: 0.7em; font-weight: 600; border-radius: 25px; transition: all 0.3s ease;">
+            VOIR SUR<br>GOOGLE MAPS
+        </a>
+    </div>
+    <div style="text-align: center;">
+        <img src="5.png" alt="#" style="max-width: 100%; height: auto; margin-top: -80px;">
+    </div>
+    
+    <img src="6.png" alt="#" style="margin-left: 280px;   height: 150px; width: auto; object-fit: cover;margin-top: -40px;">
+     <img src="forme1.png" alt="#" class="img-fluid" style="margin-top: -70px;">
+    <div style="text-align: center; font-size: 0.7em; color: #492a01; font-weight:400px; margin: 10px 0 20px 0;">
+        MERCI DE CONFIRMER VOTRE
+    </div>
+    <div style="text-align: center; font-size: 0.9em; color: #cb7402; font-weight:bolder; margin: -23px 0 20px 0;">
+        présence avant le 15 MAI 2026 
+    </div>
+    <img src="ig3.png" alt="#" class="img-fluid">
+    <img src="6.png" alt="#" style="margin-left:-70px;   height: 150px; width: auto; object-fit: cover;margin-top: -50px;">
+
+
+    <div style="text-align: center; margin: -50px 20px 40px 20px; padding: 40px 20px;">
+        <div style="font-family: 'Brush Script MT', 'Lucida Handwriting', cursive; font-size: 3em; color: #CC7700; font-weight: 200; margin-bottom: 10px;">
+            Code vestimentaire
+        </div>
+        <div style="font-size: 0.9em; color: #333; letter-spacing: 3px; font-weight: 600; margin-bottom: 30px;margin-top: -20px;margin-left: 100px;">
+            CHIC & ÉLÉGANT
+        </div>
+        <div style="font-size: 0.95em; color: #333; font-weight: 400; line-height: 1.8;">
+            « CE QUE DIEU A UNI, QUE<br>PERSONNE NE LE SÉPARE »<br>
+            <span style="font-size: 0.85em; margin-top: 0px; display: block;">MATTHIEU 19:6</span>
+        </div>
+    </div>
+     <img src="forme2.png" alt="#" class="img-fluid" style="margin-top: -70px;">
+    <img src="7.png" alt="#" class="img-fluid" style="margin-top: -70px;">
+    <footer style="background-color: #cb7402;padding: 10px;text-align: center;">
+        <p style="color:white;font-size: 0.6em;text-align: center;margin-bottom: -5px;">CRÉATION EXCLUSIVE PAR EKLA SOLUTIONS @ TOUS DROITS RÉSERVÉS</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const playBtn = document.getElementById('playBtn');
+        const bgMusic = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        playBtn.addEventListener('click', function() {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+                playBtn.style.opacity = '0.9';
+            } else {
+                bgMusic.play();
+                isPlaying = true;
+                playBtn.style.opacity = '0.5';
+            }
+        });
+    </script>
+</body>
+</html>
