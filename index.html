@@ -153,9 +153,10 @@
     </style>
 </head>
 <body>
-    <audio id="bgMusic" style="display: none;">
-        <source src="music.m4a" type="audio/mpeg">
+    <audio id="bgMusic" style="display:none;" preload="none" playsinline>
+        <source src="music.m4a" type="audio/mp4">
     </audio>
+    
     
     <div class="image-wrapper">
         <svg class="music-circle-text" viewBox="0 0 200 200" width="200" height="200">
@@ -273,6 +274,39 @@
             }
         });
     </script>
+    <script>
+    const playBtn = document.getElementById('playBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    let isPlaying = false;
+
+    // 🔑 Clé iOS : charger le fichier audio au premier tap
+    playBtn.addEventListener('click', function () {
+
+        // Étape 1 : forcer le chargement sur iOS (obligatoire)
+        bgMusic.load();
+
+        // Étape 2 : jouer immédiatement dans le même événement click
+        if (!isPlaying) {
+            const promise = bgMusic.play();
+
+            if (promise !== undefined) {
+                promise.then(() => {
+                    isPlaying = true;
+                    playBtn.style.opacity = '0.5';
+                }).catch((err) => {
+                    // iOS a bloqué malgré tout → on réessaie au prochain tap
+                    console.log('Lecture bloquée :', err);
+                    isPlaying = false;
+                    playBtn.style.opacity = '1';
+                });
+            }
+        } else {
+            bgMusic.pause();
+            isPlaying = false;
+            playBtn.style.opacity = '1';
+        }
+    });
+</script>
 </body>
 </html>
 
