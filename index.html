@@ -205,7 +205,7 @@
     
     
     <div style="text-align: center; margin: 30px 0;">
-        <a href="https://maps.app.goo.gl/pdoxxDXKr89p6WKS9?g_st=aw"  style="display: inline-block; background: #CC7700; color: white; text-decoration: none; padding: 10px 25px; font-size: 0.7em; font-weight: 600; border-radius: 25px; transition: all 0.3s ease;">
+        <a href="https://maps.app.goo.gl/pdoxxDXKr89p6WKS9" target="_blank"  style="display: inline-block; background: #CC7700; color: white; text-decoration: none; padding: 10px 25px; font-size: 0.7em; font-weight: 600; border-radius: 25px; transition: all 0.3s ease;">
             VOIR SUR<br>GOOGLE MAPS
         </a>
     </div>
@@ -218,7 +218,7 @@
     
     
     <div style="text-align: center; margin: 30px 0;">
-        <a href="https://maps.app.goo.gl/e581RQUTYzCkxbh19?g_st=aw"  style="display: inline-block; background: #CC7700; color: white; text-decoration: none; padding: 10px 25px; font-size: 0.7em; font-weight: 600; border-radius: 25px; transition: all 0.3s ease;">
+        <a href="https://maps.app.goo.gl/e581RQUTYzCkxbh19" target="_blank" style="display: inline-block; background: #CC7700; color: white; text-decoration: none; padding: 10px 25px; font-size: 0.7em; font-weight: 600; border-radius: 25px; transition: all 0.3s ease;">
             VOIR SUR<br>GOOGLE MAPS
         </a>
     </div>
@@ -299,6 +299,29 @@
             isPlaying = false;
             playBtn.style.opacity = '1';
         }
+    });
+</script>
+<script>
+    // Arrêter la musique quand on quitte la page
+    window.addEventListener('pagehide', function() {
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
+        isPlaying = false;
+    });
+
+    // Arrêter quand l'onglet devient invisible (changer d'onglet, minimize)
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            bgMusic.pause();
+            isPlaying = false;
+            playBtn.style.opacity = '1';
+        }
+    });
+
+    // Arrêter quand on ferme ou quitte la page
+    window.addEventListener('beforeunload', function() {
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
     });
 </script>
 </body>
