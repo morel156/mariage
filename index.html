@@ -153,9 +153,9 @@
     </style>
 </head>
 <body>
-    <audio id="bgMusic" style="display:none;" preload="none" playsinline>
+    <audio id="bgMusic" preload="auto" playsinline loop style="display:none;">
         <source src="music.mpeg" type="audio/mp4">
-    </audio>
+   </audio>
     
     
     <div class="image-wrapper">
@@ -200,7 +200,7 @@
     </div>
     
     <div style="text-align: center; font-size: 0.9em; color: #492a01; font-weight: 600; margin: -40px 0 20px 0;">
-        CÉRÉMONIE CIVILE <br> MAIRIE DE YAMOUSSOUKRO
+        CÉRÉMONIE CIVILE <br> MAIRIE DE YAMOUSSOUKRO À 14h30.
     </div>
     
     
@@ -246,8 +246,8 @@
             CHIC & ÉLÉGANT
         </div>
         <div style="font-size: 0.95em; color: #333; font-weight: 400; line-height: 1.8;">
-            « CE QUE DIEU A UNI, QUE<br>PERSONNE NE LE SÉPARE »<br>
-            <span style="font-size: 0.85em; margin-top: 0px; display: block;">MATHIEU 19:6</span>
+            « Ainsi ils ne sont plus deux, mais ils sont une seule chair.<br> Que l’homme donc ne sépare pas ce que Dieu a joint. »<br>
+            <span style="font-size: 0.85em; margin-top: 0px; display: block;">Mathieu 19:6</span>
         </div>
     </div>
      <img src="forme21.png" alt="#" class="img-fluid" style="margin-top: -70px;">
@@ -257,78 +257,46 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const playBtn = document.getElementById('playBtn');
-        const bgMusic = document.getElementById('bgMusic');
-        let isPlaying = false;
 
-        playBtn.addEventListener('click', function() {
-            if (isPlaying) {
-                bgMusic.pause();
-                isPlaying = false;
-                playBtn.style.opacity = '0.9';
-            } else {
-                bgMusic.play();
-                isPlaying = true;
-                playBtn.style.opacity = '0.5';
-            }
-        });
-    </script>
-    <script>
-    const playBtn = document.getElementById('playBtn');
-    const bgMusic = document.getElementById('bgMusic');
-    let isPlaying = false;
 
-    // 🔑 Clé iOS : charger le fichier audio au premier tap
-    playBtn.addEventListener('click', function () {
-
-        // Étape 1 : forcer le chargement sur iOS (obligatoire)
-        bgMusic.load();
-
-        // Étape 2 : jouer immédiatement dans le même événement click
-        if (!isPlaying) {
-            const promise = bgMusic.play();
-
-            if (promise !== undefined) {
-                promise.then(() => {
-                    isPlaying = true;
-                    playBtn.style.opacity = '0.5';
-                }).catch((err) => {
-                    // iOS a bloqué malgré tout → on réessaie au prochain tap
-                    console.log('Lecture bloquée :', err);
-                    isPlaying = false;
-                    playBtn.style.opacity = '1';
-                });
-            }
-        } else {
-            bgMusic.pause();
-            isPlaying = false;
-            playBtn.style.opacity = '1';
-        }
-    });
-</script>
 <script>
-    // Arrêter la musique quand on quitte la page
-    window.addEventListener('pagehide', function() {
-        bgMusic.pause();
-        bgMusic.currentTime = 0;
-        isPlaying = false;
-    });
+  const bgMusic = document.getElementById('bgMusic');
+  let unlocked = false;
 
-    // Arrêter quand l'onglet devient invisible (changer d'onglet, minimize)
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            bgMusic.pause();
-            isPlaying = false;
-            playBtn.style.opacity = '1';
-        }
-    });
+  function unlockAndPlay() {
+    if (unlocked) return;
+    unlocked = true;
 
-    // Arrêter quand on ferme ou quitte la page
-    window.addEventListener('beforeunload', function() {
-        bgMusic.pause();
-        bgMusic.currentTime = 0;
-    });
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const src = ctx.createMediaElementSource(bgMusic);
+    src.connect(ctx.destination);
+    ctx.resume();
+
+    bgMusic.muted = false;
+    bgMusic.play().catch(() => {});
+
+    document.removeEventListener('touchstart', unlockAndPlay);
+    document.removeEventListener('click', unlockAndPlay);
+  }
+
+  // Démarrage au premier geste (obligatoire iOS + Android)
+  document.addEventListener('touchstart', unlockAndPlay, { once: true });
+  document.addEventListener('click', unlockAndPlay, { once: true });
+
+  // Pause si l'onglet devient invisible, reprise au retour
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      bgMusic.pause();
+    } else if (unlocked) {
+      bgMusic.play().catch(() => {});
+    }
+  });
+
+  // Arrêt complet en quittant la page
+  window.addEventListener('pagehide', function () {
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+  });
 </script>
 </body>
 </html>
