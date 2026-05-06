@@ -263,27 +263,19 @@
   const bgMusic = document.getElementById('bgMusic');
   let unlocked = false;
 
-  function unlockAndPlay() {
+  function tryPlay() {
     if (unlocked) return;
     unlocked = true;
 
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const src = ctx.createMediaElementSource(bgMusic);
-    src.connect(ctx.destination);
-    ctx.resume();
-
-    bgMusic.muted = false;
-    bgMusic.play().catch(() => {});
-
-    document.removeEventListener('touchstart', unlockAndPlay);
-    document.removeEventListener('click', unlockAndPlay);
+    bgMusic.play().catch(() => {
+      unlocked = false; // réessayer si ça échoue
+    });
   }
 
-  // Démarrage au premier geste (obligatoire iOS + Android)
-  document.addEventListener('touchstart', unlockAndPlay, { once: true });
-  document.addEventListener('click', unlockAndPlay, { once: true });
+  document.addEventListener('touchstart', tryPlay, { once: true });
+  document.addEventListener('touchend', tryPlay, { once: true });
+  document.addEventListener('click', tryPlay, { once: true });
 
-  // Pause si l'onglet devient invisible, reprise au retour
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
       bgMusic.pause();
@@ -292,7 +284,6 @@
     }
   });
 
-  // Arrêt complet en quittant la page
   window.addEventListener('pagehide', function () {
     bgMusic.pause();
     bgMusic.currentTime = 0;
